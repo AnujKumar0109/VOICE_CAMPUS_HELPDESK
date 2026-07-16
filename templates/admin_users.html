@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Users — Admin{% endblock %}
+{% block page_title %}Registered Users{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header"><i class="bi bi-people text-accent"></i> All Users ({{ users | length }})</div>
+  <div class="card-body" style="padding:0">
+    {% if users %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Email</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          {% for u in users %}
+          <tr>
+            <td class="text-muted fs-12">{{ loop.index }}</td>
+            <td class="fw-600">{{ u.name }}</td>
+            <td class="text-muted">{{ u.email }}</td>
+            <td>
+              {% if u.role == 'admin' %}
+                <span class="badge badge-danger">Admin</span>
+              {% else %}
+                <span class="badge badge-info">Student</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-people"></i><p>No users found.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

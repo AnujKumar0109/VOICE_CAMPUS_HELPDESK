@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Report — Campus Helpdesk{% endblock %}
+{% block page_title %}Chat History Report{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-between align-center mb-24">
+  <div>
+    <h5 class="fw-600" style="margin-bottom:2px">Your Query History</h5>
+    <p class="text-muted fs-12">{{ history | length }} total queries</p>
+  </div>
+  <a href="{{ url_for('student.download_report') }}" class="btn btn-accent">
+    <i class="bi bi-file-earmark-pdf-fill"></i> Download PDF
+  </a>
+</div>
+
+{% if history %}
+<div class="card">
+  <div class="card-body" style="padding:0">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in history %}
+          <tr>
+            <td class="text-muted fs-12">{{ loop.index }}</td>
+            <td style="max-width:220px">{{ q.question }}</td>
+            <td style="max-width:280px;color:var(--text-muted)">
+              {{ (q.response or '—')[:80] }}{% if q.response and q.response|length > 80 %}…{% endif %}
+            </td>
+            <td>
+              {% if q.status == 'answered' %}
+                <span class="badge badge-success">Answered</span>
+              {% else %}
+                <span class="badge badge-warning">Unresolved</span>
+              {% endif %}
+            </td>
+            <td class="text-muted fs-12">{{ q.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body">
+    <div class="empty-state">
+      <i class="bi bi-file-earmark"></i>
+      <p>No queries to export yet. Start asking questions!</p>
+      <a href="{{ url_for('student.query_page') }}" class="btn btn-accent" style="margin-top:12px">
+        <i class="bi bi-mic-fill"></i> Ask a Question
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

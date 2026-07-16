@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Feedback — Admin{% endblock %}
+{% block page_title %}Student Feedback{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header"><i class="bi bi-chat-square-heart text-accent"></i> All Feedback ({{ feedback | length }})</div>
+  <div class="card-body" style="padding:0">
+    {% if feedback %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Student</th><th>Rating</th><th>Comment</th></tr>
+        </thead>
+        <tbody>
+          {% for fb in feedback %}
+          <tr>
+            <td class="fw-600">{{ fb.user_name }}</td>
+            <td>
+              <span style="color:#f59e0b;font-size:16px">{% for i in range(fb.rating) %}★{% endfor %}</span>
+              <span style="color:#d1d5db;font-size:16px">{% for i in range(5 - fb.rating) %}★{% endfor %}</span>
+              <span class="text-muted fs-12">({{ fb.rating }}/5)</span>
+            </td>
+            <td>{{ fb.comment or '—' }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-chat-square-heart"></i><p>No feedback yet.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

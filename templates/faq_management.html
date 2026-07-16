@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}FAQ Management — Campus Helpdesk{% endblock %}
+{% block page_title %}FAQ Management{% endblock %}
+
+{% block content %}
+
+<div style="display:grid;grid-template-columns:1fr 1.6fr;gap:20px;align-items:start">
+
+  <!-- Add / Edit FAQ Form -->
+  <div class="card" style="position:sticky;top:80px">
+    <div class="card-header">
+      {% if edit_faq %}<i class="bi bi-pencil-square text-accent"></i> Edit FAQ
+      {% else %}<i class="bi bi-plus-circle text-accent"></i> Add New FAQ{% endif %}
+    </div>
+    <div class="card-body">
+      <form method="POST"
+            action="{% if edit_faq %}{{ url_for('admin.edit_faq', faq_id=edit_faq.id) }}
+                    {% else %}{{ url_for('admin.add_faq_route') }}{% endif %}">
+
+        <div class="form-group">
+          <label for="faq-question">Question</label>
+          <textarea id="faq-question" name="question" class="form-control" rows="3"
+                    placeholder="Enter the campus question…" required>{{ edit_faq.question if edit_faq else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="faq-answer">Answer</label>
+          <textarea id="faq-answer" name="answer" class="form-control" rows="5"
+                    placeholder="Enter the answer…" required>{{ edit_faq.answer if edit_faq else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="faq-category">Category</label>
+          <select id="faq-category" name="category" class="form-control">
+            {% set cats = ['fees','exam','timetable','hostel','library','admission','faculty','department','scholarship','notice','general'] %}
+            {% for cat in cats %}
+            <option value="{{ cat }}"
+              {% if edit_faq and edit_faq.category == cat %}selected{% endif %}>
+              {{ cat | capitalize }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div style="display:flex;gap:8px">
+          <button type="submit" class="btn btn-accent">
+            <i class="bi bi-check-lg"></i> {% if edit_faq %}Update{% else %}Add FAQ{% endif %}
+          </button>
+          {% if edit_faq %}
+          <a href="{{ url_for('admin.faqs') }}" class="btn btn-outline">Cancel</a>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ List -->
+  <div class="card">
+    <div class="card-header d-flex justify-between align-center">
+      <span><i class="bi bi-list-ul"></i> All FAQs ({{ faqs | length }})</span>
+      <input type="text" id="faq-search" class="form-control" placeholder="Search FAQs…"
+             style="width:180px;padding:6px 12px">
+    </div>
+    <div class="card-body" style="padding:0;max-height:70vh;overflow-y:auto">
+      <table id="faq-table">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for faq in faqs %}
+          <tr>
+            <td style="max-width:280px">
+              <div style="font-size:13px;color:var(--text)">{{ faq.question }}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">
+                {{ faq.answer[:60] }}…
+              </div>
+            </td>
+            <td><span class="badge badge-info">{{ faq.category }}</span></td>
+            <td>
+              <div style="display:flex;gap:6px">
+                <a href="{{ url_for('admin.edit_faq', faq_id=faq.id) }}"
+                   class="btn btn-outline btn-sm">
+                  <i class="bi bi-pencil"></i>
+                </a>
+                <form method="POST" action="{{ url_for('admin.delete_faq_route', faq_id=faq.id) }}"
+                      onsubmit="return confirm('Delete this FAQ?')">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Live search filter
+  document.getElementById('faq-search').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#faq-table tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+</script>
+
+{% endblock %}

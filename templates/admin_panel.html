@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Campus Helpdesk{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stat Cards -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="bi bi-chat-square-text"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.total_queries }}</h3>
+      <p>Total Queries</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon teal"><i class="bi bi-check-circle"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.answered }}</h3>
+      <p>Answered</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="bi bi-exclamation-circle"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.unanswered }}</h3>
+      <p>Unanswered</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon amber"><i class="bi bi-star-half"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.avg_rating }}/5</h3>
+      <p>Avg Rating</p>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Links -->
+<div class="d-flex gap-8 flex-wrap mb-24">
+  <a href="{{ url_for('admin.faqs') }}"     class="btn btn-primary"><i class="bi bi-question-circle"></i> Manage FAQs</a>
+  <a href="{{ url_for('admin.analytics') }}" class="btn btn-accent"><i class="bi bi-bar-chart"></i> View Analytics</a>
+  <a href="{{ url_for('admin.queries') }}"  class="btn btn-outline"><i class="bi bi-list-ul"></i> All Queries</a>
+  <a href="{{ url_for('admin.users') }}"    class="btn btn-outline"><i class="bi bi-people"></i> Users</a>
+</div>
+
+<!-- Category Breakdown -->
+{% if stats.chart_labels %}
+<div class="card">
+  <div class="card-header"><i class="bi bi-bar-chart-line text-accent"></i> Query Categories Overview</div>
+  <div class="card-body">
+    {% for i in range(stats.chart_labels | length) %}
+    <div style="margin-bottom:14px">
+      <div class="d-flex justify-between align-center mb-4">
+        <span class="fw-600 fs-12 text-primary" style="text-transform:capitalize">{{ stats.chart_labels[i] }}</span>
+        <span class="badge badge-info">{{ stats.chart_counts[i] }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress-fill"
+             style="width:{{ (stats.chart_counts[i] / (stats.total_queries or 1) * 100) | round(1) }}%">
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body">
+    <div class="empty-state">
+      <i class="bi bi-bar-chart"></i>
+      <p>No analytics data yet. Queries will appear here once students start using the system.</p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

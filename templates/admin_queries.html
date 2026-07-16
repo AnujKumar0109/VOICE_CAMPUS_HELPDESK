@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}All Queries — Campus Helpdesk{% endblock %}
+{% block page_title %}All Student Queries{% endblock %}
+
+{% block content %}
+
+{% if unanswered %}
+<div class="alert alert-warning">
+  <i class="bi bi-exclamation-triangle"></i>
+  <strong>{{ unanswered | length }}</strong> unanswered quer{{ 'y' if unanswered|length == 1 else 'ies' }} need attention.
+</div>
+{% endif %}
+
+<div class="card">
+  <div class="card-header d-flex justify-between align-center">
+    <span><i class="bi bi-list-ul"></i> All Queries ({{ queries | length }})</span>
+    <input type="text" id="q-search" class="form-control" placeholder="Search…"
+           style="width:180px;padding:6px 12px">
+  </div>
+  <div class="card-body" style="padding:0">
+    {% if queries %}
+    <div class="table-wrap">
+      <table id="q-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Question</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in queries %}
+          <tr>
+            <td class="text-muted fs-12">{{ loop.index }}</td>
+            <td class="fw-600">{{ q.user_name }}</td>
+            <td style="max-width:300px">{{ q.question }}</td>
+            <td>
+              {% if q.status == 'answered' %}
+                <span class="badge badge-success">Answered</span>
+              {% else %}
+                <span class="badge badge-warning">Unresolved</span>
+              {% endif %}
+            </td>
+            <td class="text-muted fs-12">{{ q.created_at }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <i class="bi bi-inbox"></i>
+      <p>No queries yet.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.getElementById('q-search').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    document.querySelectorAll('#q-table tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+</script>
+{% endblock %}

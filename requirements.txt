@@ -1,0 +1,10 @@
+Flask==3.0.3
+Werkzeug==3.0.3
+scikit-learn==1.4.2
+nltk==3.8.1
+spacy==3.7.4
+SpeechRecognition==3.10.4
+pyttsx3==2.90
+reportlab==4.2.2
+numpy==1.26.4
+pyaudio==0.2.14

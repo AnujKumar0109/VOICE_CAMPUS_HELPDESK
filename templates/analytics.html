@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Analytics — Campus Helpdesk{% endblock %}
+{% block page_title %}Analytics Dashboard{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Stat Cards -->
+<div class="stat-grid mb-24">
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="bi bi-chat-square-text"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.total_queries }}</h3><p>Total Queries</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon teal"><i class="bi bi-check-circle"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.answered }}</h3><p>Answered</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red"><i class="bi bi-x-circle"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.unanswered }}</h3><p>Unanswered</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon amber"><i class="bi bi-star"></i></div>
+    <div class="stat-info">
+      <h3>{{ stats.avg_rating }}/5</h3><p>Avg Rating</p>
+    </div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+
+  <!-- Bar Chart -->
+  <div class="chart-card">
+    <h6><i class="bi bi-bar-chart-fill text-accent"></i> Queries per Category</h6>
+    {% if stats.chart_labels %}
+    <canvas id="barChart" height="220"></canvas>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-bar-chart"></i><p>No data yet</p></div>
+    {% endif %}
+  </div>
+
+  <!-- Doughnut Chart -->
+  <div class="chart-card">
+    <h6><i class="bi bi-pie-chart-fill text-accent"></i> Answer Status</h6>
+    {% if stats.total_queries > 0 %}
+    <canvas id="doughnutChart" height="220"></canvas>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-pie-chart"></i><p>No data yet</p></div>
+    {% endif %}
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const chartLabels   = {{ stats.chart_labels | tojson }};
+  const chartCounts   = {{ stats.chart_counts | tojson }};
+  const statsAnswered   = {{ stats.answered }};
+  const statsUnanswered = {{ stats.unanswered }};
+</script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}

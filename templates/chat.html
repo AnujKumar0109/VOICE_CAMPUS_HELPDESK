@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Chat — Campus Helpdesk{% endblock %}
+{% block page_title %}Chat Interface{% endblock %}
+
+{% block content %}
+
+<div class="chat-container">
+
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="bot-avatar">🤖</div>
+    <div>
+      <h6>Campus Helpdesk Bot</h6>
+      <small>AI-Powered &middot; Ask anything about your campus</small>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <a href="{{ url_for('student.query_page') }}" class="btn btn-outline btn-sm"
+         style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff">
+        <i class="bi bi-mic"></i> Voice
+      </a>
+    </div>
+  </div>
+
+  <!-- Messages Area -->
+  <div class="chat-messages" id="chat-messages">
+    <!-- Bot welcome -->
+    <div class="msg-row bot-msg">
+      <div class="msg-avatar"><i class="bi bi-robot"></i></div>
+      <div>
+        <div class="msg-bubble">
+          👋 Hello <strong>{{ session.user_name }}</strong>! I'm your Campus Helpdesk Assistant.<br>
+          Ask me anything about <em>fees, exams, timetable, hostel, library, admission</em> or any campus topic.
+        </div>
+        <div class="msg-meta">Now</div>
+      </div>
+    </div>
+
+    <!-- Past history (read-only display) -->
+    {% for q in history %}
+    <div class="msg-row user-msg">
+      <div class="msg-avatar"><i class="bi bi-person-fill"></i></div>
+      <div>
+        <div class="msg-bubble">{{ q.question }}</div>
+        <div class="msg-meta">{{ q.created_at }}</div>
+      </div>
+    </div>
+    <div class="msg-row bot-msg">
+      <div class="msg-avatar"><i class="bi bi-robot"></i></div>
+      <div>
+        <div class="msg-bubble">
+          {{ q.response }}
+          <div style="margin-top:6px">
+            {% if q.status == 'answered' %}
+              <span class="badge badge-success">Answered</span>
+            {% else %}
+              <span class="badge badge-warning">Unresolved</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="msg-meta">{{ q.created_at }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Input Area -->
+  <div class="chat-input-area">
+    <button class="mic-btn" id="chat-mic-btn" title="Voice input">
+      <i class="bi bi-mic"></i>
+    </button>
+    <div class="input-wrap">
+      <textarea class="chat-input" id="chat-input"
+                placeholder="Ask a campus question…" rows="1"></textarea>
+    </div>
+    <button class="send-btn" id="send-btn" title="Send">
+      <i class="bi bi-send-fill"></i>
+    </button>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

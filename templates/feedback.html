@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Feedback — Campus Helpdesk{% endblock %}
+{% block page_title %}Feedback{% endblock %}
+
+{% block content %}
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+  <!-- Submit Feedback -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-star-fill text-accent"></i> Submit Feedback</div>
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('student.feedback') }}">
+
+        <div class="form-group">
+          <label>Select Query (Optional)</label>
+          <select name="query_id" class="form-control" id="query-select">
+            <option value="">-- General Feedback --</option>
+            {% for q in queries %}
+            <option value="{{ q.id }}">Q{{ loop.index }}: {{ q.question[:50] }}…</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Your Rating</label>
+          <div class="star-rating">
+            {% for i in range(1, 6) %}
+            <span class="star" data-val="{{ i }}">★</span>
+            {% endfor %}
+          </div>
+          <input type="hidden" name="rating" id="rating-input" value="5">
+        </div>
+
+        <div class="form-group">
+          <label>Comment</label>
+          <textarea name="comment" class="form-control" rows="4"
+                    placeholder="Tell us how we can improve…"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-accent">
+          <i class="bi bi-send"></i> Submit Feedback
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- My Feedback -->
+  <div class="card">
+    <div class="card-header"><i class="bi bi-list-check"></i> My Feedback History</div>
+    <div class="card-body" style="padding:0">
+      {% if my_feedback %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Rating</th><th>Comment</th></tr>
+          </thead>
+          <tbody>
+            {% for fb in my_feedback %}
+            <tr>
+              <td>
+                <span style="color:#f59e0b;font-size:16px">
+                  {% for i in range(fb.rating) %}★{% endfor %}
+                </span>
+                <span style="color:#d1d5db;font-size:16px">
+                  {% for i in range(5 - fb.rating) %}★{% endfor %}
+                </span>
+              </td>
+              <td>{{ fb.comment or '—' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <i class="bi bi-chat-square-heart"></i>
+        <p>No feedback submitted yet.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

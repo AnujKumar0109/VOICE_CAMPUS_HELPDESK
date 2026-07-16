@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Voice Query — Campus Helpdesk{% endblock %}
+{% block page_title %}Voice Query{% endblock %}
+
+{% block content %}
+
+<div style="max-width:680px;margin:0 auto">
+
+  <!-- Voice Card -->
+  <div class="card mb-24">
+    <div class="card-header">
+      <i class="bi bi-mic-fill text-accent"></i> Speak or Type Your Campus Question
+    </div>
+    <div class="card-body" style="text-align:center">
+
+      <!-- Mic Hero -->
+      <div class="mic-hero" id="mic-hero" title="Click to speak">
+        🎙️
+      </div>
+      <p class="voice-status" id="voice-status">Click the mic and ask your question</p>
+
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--text-muted);font-size:12px">
+        <hr style="flex:1;border-color:var(--border)"> or type below <hr style="flex:1;border-color:var(--border)">
+      </div>
+
+      <!-- Text Input -->
+      <div style="display:flex;gap:8px">
+        <input type="text" id="query-input" class="form-control"
+               placeholder="Type your question here…" autocomplete="off">
+        <button class="btn btn-accent" id="submit-btn">
+          <i class="bi bi-send-fill"></i> Ask
+        </button>
+      </div>
+
+      <!-- Options -->
+      <div style="display:flex;align-items:center;gap:16px;margin-top:14px;flex-wrap:wrap;justify-content:center">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;text-transform:none;color:var(--text)">
+          <input type="checkbox" id="speak-toggle" style="width:15px;height:15px;accent-color:var(--accent)">
+          Read answer aloud
+        </label>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+          <span style="color:var(--text-muted);font-size:12px">Speed:</span>
+          <input type="range" id="rate-range" min="80" max="250" value="150" style="width:90px;accent-color:var(--accent)">
+          <span id="rate-label" style="font-size:12px;color:var(--text-muted)">150 wpm</span>
+        </div>
+      </div>
+
+    </div><!-- card-body -->
+  </div><!-- card -->
+
+  <!-- Answer Box -->
+  <div class="card" id="answer-card" style="display:none">
+    <div class="card-header d-flex justify-between align-center">
+      <span><i class="bi bi-robot text-accent"></i> Helpdesk Response</span>
+      <div style="display:flex;gap:6px">
+        <span class="badge badge-info" id="intent-badge"></span>
+        <span class="badge badge-muted fs-12" id="score-badge"></span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="answer-box visible" id="answer-box">
+        <div class="answer-label">Answer</div>
+        <p id="answer-text"></p>
+      </div>
+
+      <div class="suggestions-box" id="suggestions-box">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">
+          <i class="bi bi-lightbulb"></i> Similar questions you might mean:
+        </div>
+        <div id="suggestion-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-body">
+      <div style="font-size:12px;color:var(--text-muted)">
+        <strong style="color:var(--primary)">💡 Try asking:</strong>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          {% set tips = ["What is the semester fee?", "When are the exams?", "What are hostel rules?",
+                        "Library opening time?", "How to apply for scholarship?", "Who is the HOD of MCA?"] %}
+          {% for tip in tips %}
+            <span class="suggestion-chip" onclick="document.getElementById('query-input').value='{{ tip }}'">{{ tip }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Show answer card when answer is available
+  const origDisplay = document.getElementById('answer-box');
+  const answerCard  = document.getElementById('answer-card');
+  const observer = new MutationObserver(() => {
+    if (document.getElementById('answer-box').classList.contains('visible')) {
+      answerCard.style.display = '';
+    }
+  });
+  observer.observe(document.getElementById('answer-box'), { attributes: true });
+</script>
+<script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+{% endblock %}
