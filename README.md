@@ -1,115 +1,74 @@
-# Voice-Based Campus Helpdesk Agent
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-3.x-black?logo=flask)
+![SQLite](https://img.shields.io/badge/Database-SQLite-blue?logo=sqlite)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Active-success)
 
-An AI-powered web application that allows students to ask questions about their college using voice or text, and receive accurate answers.
+
+# 🎙️ Voice Campus Helpdesk System
+
+An AI-powered voice-based campus helpdesk system that answers student queries using speech recognition and natural language processing.
+
+## 📑 Table of Contents
+
+- Features
+- Tech Stack
+- Screenshots
+- Project Structure
+- Installation
+- Usage
+- API Endpoints
+- Future Enhancements
+- Deployment
+- License
+
 
 ## Features
 
-### 1. **User Authentication**
-- Student and Admin registration/login
-- Secure password hashing using Werkzeug
-- Session management with Flask-Login
-
-### 2. **Voice Input/Output**
-- Speech-to-text conversion using SpeechRecognition
-- Text-to-speech response using pyttsx3
-- Microphone recording with real-time feedback
-
-### 3. **NLP Processing**
-- Text preprocessing (tokenization, lemmatization, stopword removal)
-- Intent detection and category classification
-- TF-IDF based FAQ matching
-- Cosine similarity scoring
-
-### 4. **FAQ Management**
-- Create, read, update, delete FAQs
-- Category-based organization
-- Keyword tagging for better matching
-- Admin panel for FAQ maintenance
-
-### 5. **Query Management**
-- Store all user queries and responses
-- Track query status (answered, pending, resolved)
-- Calculate confidence scores
-- Query history and analytics
-
-### 6. **Analytics Dashboard**
-- Query statistics and distribution
-- User engagement metrics
-- Confidence score tracking
-- Category-wise analysis
-
-### 7. **Feedback System**
-- User ratings (1-5 stars)
-- Helpful/Not helpful feedback
-- Comment collection
-- Admin feedback review
+- 🎤 Voice Input
+- 🤖 AI Chatbot
+- 📄 PDF Knowledge Base
+- 🔍 Intent Detection
+- 📊 Admin Dashboard
+- 📝 Feedback Collection
+- 👨‍🎓 Student Query System
 
 ## Tech Stack
 
-### Backend
-- **Python 3.8+**
-- **Flask 2.3** - Web framework
-- **SQLAlchemy 2.0** - ORM
-- **Flask-Login** - Authentication
+- Python
+- Flask
+- SQLite
+- HTML
+- CSS
+- JavaScript
+- SpeechRecognition
+- NLP
+- Scikit-learn
 
-### Frontend
-- **HTML5, CSS3, JavaScript**
-- **Bootstrap 5.3** - UI Framework
-- **Chart.js** - Data visualization
 
-### Database
-- **SQLite** - Lightweight database
 
-### AI/NLP
-- **scikit-learn** - Machine learning
-- **spaCy** - NLP processing
-- **NLTK** - Natural language toolkit
-- **TF-IDF Vectorizer** - Feature extraction
+## 📸 Screenshots
 
-### Voice Processing
-- **SpeechRecognition** - Speech-to-text
-- **pyttsx3** - Text-to-speech
+### Login Page
+![Login Page](screenshots/login.png)
 
-## Installation
+### Register Page
+![Register Page](screenshots/register.png)
 
-### 1. Clone or Extract Project
-```bash
-cd voice_campus_agent
-```
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
 
-### 2. Create Virtual Environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### FAQ Management
+![FAQ Management](screenshots/faq-management.png)
 
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+### All Student Queries
+![All Student Queries](screenshots/admin-queries.png)
 
-### 4. Download NLP Models
-```bash
-python -m spacy download en_core_web_sm
-python -m nltk.downloader punkt stopwords wordnet
-```
+### Analytics Dashboard
+![Analytics Dashboard](screenshots/analytics-dashboard.png)
 
-### 5. Run Application
-```bash
-python run.py
-```
-
-The application will start at `http://localhost:5000`
-
-## Demo Credentials
-
-**Admin Account:**
-- Email: `admin@college.edu`
-- Password: `password123`
-
-**Student Account:**
-- Email: `student@college.edu`
-- Password: `password123`
+### Feedback Page
+![Feedback Page](screenshots/feedback.png)
 
 ## Project Structure
 
@@ -161,6 +120,48 @@ voice_campus_agent/
 ├── requirements.txt             # Dependencies
 └── README.md                    # This file
 ```
+
+## Installation
+
+### 1. Clone or Extract Project
+```bash
+git clone https://github.com/AnujKumar0109/VOICE_CAMPUS_HELPDESK.git
+cd VOICE_CAMPUS_HELPDESK
+```
+
+### 2. Create Virtual Environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+### 3. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Download NLP Models
+```bash
+python -m spacy download en_core_web_sm
+python -m nltk.downloader punkt stopwords wordnet
+```
+
+### 5. Run Application
+```bash
+python run.py
+```
+
+The application will start at `http://localhost:5000`
+
+## Demo Credentials
+
+**Admin Account:**
+- Email: `admin@campus.edu`
+- Password: `admin123`
+
+**Student Account:**
+- Email: `student@campus.edu`
+- Password: `student123`
 
 ## Database Schema
 
@@ -335,9 +336,9 @@ gunicorn -w 4 -b 0.0.0.0:5000 run:app
 
 ## Team & Credits
 
-**Project Type:** MCA Final Year Project  
-**Submission Year:** 2026  
-**Technologies:** Python, Flask, Machine Learning, NLP  
+**Project Type:** MCA Final Year Project
+**Submission Year:** 2026
+**Technologies:** Python, Flask, Machine Learning, NLP
 
 ## License
 
