@@ -1,13 +1,18 @@
+# 🎙️ Voice Campus Helpdesk System
+
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black?logo=flask)
 ![SQLite](https://img.shields.io/badge/Database-SQLite-blue?logo=sqlite)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-
-# 🎙️ Voice Campus Helpdesk System
+[![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=for-the-badge)](https://voice-campus-helpdesk.onrender.com)
 
 An AI-powered voice-based campus helpdesk system that answers student queries using speech recognition and natural language processing.
+
+## 🌐 Live Demo
+
+🔗 **https://voice-campus-helpdesk.onrender.com**
 
 ## 📑 Table of Contents
 
